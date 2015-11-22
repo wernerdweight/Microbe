@@ -1,0 +1,24 @@
+#!/usr/bin/env php
+<?php
+
+/// try to set unlimited execution time
+set_time_limit(0);
+
+/// check that command was set
+if(!isset($argv[1])){
+	die('No command specified!');
+}
+
+$command = $argv[1];
+/// transform command to a path to the respective script
+$path = __DIR__.DIRECTORY_SEPARATOR.'cmd'.DIRECTORY_SEPARATOR.str_replace(':',DIRECTORY_SEPARATOR,$command).'.php';
+/// check that requested script exists
+if(!is_file($path)){
+	die('Command "'.$command.'" was not recognized!');
+}
+
+try {
+	require($path);
+} catch (Exception $e) {
+	die($e);
+}

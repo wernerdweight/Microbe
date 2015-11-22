@@ -1,0 +1,21 @@
+<form action="{{path}}" {% if attributes.method is not defined %} method="post"{% endif %}{{ formAttributes(attributes) }}>
+	{% for name,field in form.fields %}
+		<div{{ formAttributes(field.containerAttributes) }}>
+			{% if field.label is defined and field.label != false %}
+				<div{{ formAttributes(field.labelAttributes) }}>
+					<label for="form_{{name}}">{{field.label}}</label>
+				</div>
+			{% endif %}
+			{% if field.errors is defined and field.errors|length %}
+				<ul class="form-errors">
+					{% for error in field.errors %}
+						<li>{{error}}</li>
+					{% endfor %}
+				</ul>
+			{% endif %}
+			<div>
+				{{ formField(name,field,form.data[name]) }}
+			</div>
+		</div>
+	{% endfor %}
+</form>

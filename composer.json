@@ -1,0 +1,37 @@
+{
+    "name":        "wernerdweight/microbe",
+    "type":        "framework",
+    "description": "PHP microframework",
+    "keywords":    [
+        "framework",
+        "microframework"
+    ],
+    "homepage":    "https://gitlab.com/WernerDweight/Microbe",
+    "license":     "MIT",
+
+    "authors": [
+        {
+            "name": "Werner Dweight",
+            "email": "wd@wernerdweight.com"
+        }
+    ],
+
+    "require": {
+        "php": ">=5.4.0",
+        "symfony/yaml": "^2.7",
+        "twig/twig": "~1.0"
+    },
+
+    "require-dev": {},
+
+    "suggest": {},
+
+    "autoload": {
+        "psr-0": {
+            "WernerDweight\\Microbe\\": ""
+        }
+    },
+
+    "target-dir": "WernerDweight/Microbe"
+
+}
