@@ -4,7 +4,7 @@ namespace WernerDweight\Microbe\framework\twig;
 
 use WernerDweight\Microbe\framework\router\Router;
 
-class WdRenderExtension extends \Twig_Extension
+class RenderExtension extends \Twig_Extension
 {
 
     protected $router;

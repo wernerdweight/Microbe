@@ -4,7 +4,7 @@ namespace WernerDweight\Microbe\framework\twig;
 
 use WernerDweight\Microbe\framework\canonicalizer\Canonicalizer;
 
-class WdCanonicalizeExtension extends \Twig_Extension
+class CanonicalizeExtension extends \Twig_Extension
 {
 
     public function getFilters(){
