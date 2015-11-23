@@ -13,7 +13,7 @@ class FormExtension extends \Twig_Extension
 
     public function getFunctions(){
         $twig = $this->twig;
-        $twig->getLoader()->addPath('src/app/utils/formbuilder/Twig/Template');
+        $twig->getLoader()->addPath(__DIR__.'/../Template');
         
         return [
             new \Twig_SimpleFunction('form',function($form,$path,$attributes = []) use ($twig){
