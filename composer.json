@@ -34,12 +34,6 @@
         }
     },
 
-    "target-dir": "WernerDweight/Microbe",
-
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.0.0"
-        }
-    }
+    "target-dir": "WernerDweight/Microbe"
 
 }
