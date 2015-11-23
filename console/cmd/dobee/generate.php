@@ -1,6 +1,6 @@
 <?php
 
-$root = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR;
+$root = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR;
 
 require $root.'vendor'.DIRECTORY_SEPARATOR.'autoload.php';
 
@@ -28,7 +28,7 @@ if(!isset($env) || strlen($env) <= 0){
 
 echo "Initializing parameter enhancer for YAML configuration...\n";
 /// initialize parameters enhancer
-$parenhancer = new \Microbe\src\app\utils\parenhancer\Parenhancer($root.'src/app/config/parameters.'.$env.'.yml');
+$parenhancer = new \WernerDweight\Microbe\framework\parenhancer\Parenhancer($root.'src/app/config/parameters.'.$env.'.yml');
 
 echo "Initializing dobee...\n";
 /// initialize dobee
