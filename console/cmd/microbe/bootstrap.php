@@ -23,9 +23,9 @@ if(!is_dir($root.'src'.DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'forms')){
 	echo "Creating 'src/app/forms' directory...\n";
 	mkdir($root.'src'.DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'forms');
 }
-if(!is_dir($root.'src'.DIRECTORY_SEPARATOR.'theme')){
-	echo "Creating 'src/theme' directory...\n";
-	mkdir($root.'src'.DIRECTORY_SEPARATOR.'theme');
+if(!is_dir($root.'src'.DIRECTORY_SEPARATOR.'themes')){
+	echo "Creating 'src/themes' directory...\n";
+	mkdir($root.'src'.DIRECTORY_SEPARATOR.'themes');
 }
 
 echo "Done!\n";
