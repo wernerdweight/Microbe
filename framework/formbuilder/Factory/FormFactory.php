@@ -26,7 +26,7 @@ class FormFactory{
 		/// try to load and parse the configuration
 		try {
 			$fields = Yaml::parse(file_get_contents($configurationFilePath));
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 			throw new InvalidConfigurationException('Configuration for form "'.$formName.'" is not a valid YML file!');
 		}
 		

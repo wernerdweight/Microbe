@@ -13,10 +13,12 @@ class Kernel{
 	protected $currentUri;
 	protected $method;
 	protected $services;
+	protected $configuration;
 
-	public function __construct($services){
-		/// store services
+	public function __construct($services,$configuration){
+		/// store services and configuration
 		$this->services = $services;
+		$this->configuration = $configuration;
 
 		/// resolve request data
 		$this->resolveRequestData();
@@ -36,7 +38,7 @@ class Kernel{
 			$this->service('router')->route($this->currentUri);
 		} catch (\Exception $e) {
 			/// development
-			if(ENV === 'dev'){
+			if($this->configuration['environment'] !== 'prod'){
 				echo $e->getMessage();
 				exit;
 			}
@@ -48,7 +50,7 @@ class Kernel{
 						$this->service('router')->path(
 							'error',
 							array(
-								'locale' => DEFAULT_LOCALE,
+								'locale' => $this->configuration['defaultLocale'],
 								'errorCode' => is_null($e->getErrorCode()) === false ? $e->getErrorCode() : 500,
 							)
 						)
@@ -60,7 +62,7 @@ class Kernel{
 						$this->service('router')->path(
 							'error',
 							array(
-								'locale' => DEFAULT_LOCALE,
+								'locale' => $this->configuration['defaultLocale'],
 								'errorCode' => 500,
 							)
 						)

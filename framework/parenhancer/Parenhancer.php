@@ -40,6 +40,20 @@ class Parenhancer{
         return $string;
     }
 
+    public function enhanceArray($array){
+        if(is_array($array)){
+            if(count($array)){
+                foreach ($array as $key => $value) {
+                    $array[$key] = $this->enhanceArray($value);
+                }
+            }
+        }
+        else{
+            $array = $this->enhance($array);
+        }
+        return $array;
+    }
+
     protected function getParametersToEnhance($string){
         $parameters = array();
         preg_match_all('/%[^%]+%/',$string,$parameters);

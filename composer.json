@@ -24,7 +24,9 @@
 
     "require-dev": {},
 
-    "suggest": {},
+    "suggest": {
+        "wernerdweight/dobee": "0.2.*@dev"
+    },
 
     "autoload": {
         "psr-0": {
