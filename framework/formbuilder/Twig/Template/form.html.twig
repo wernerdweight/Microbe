@@ -13,7 +13,7 @@
 					{% endfor %}
 				</ul>
 			{% endif %}
-			<div>
+			<div{{ formAttributes(field.wrapperAttributes) }}>
 				{{ formField(name,field,form.data[name]) }}
 			</div>
 		</div>
