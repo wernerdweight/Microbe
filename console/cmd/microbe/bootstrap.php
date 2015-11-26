@@ -1,6 +1,11 @@
 <?php
 
-$root = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR;
+/// unix systems
+$root = preg_replace('/^(.*)\/[^\/]+\/[^\/]+\/[^\/]+\/[^\/]+\/[^\/]+\/[^\/]+\/[^\/]+\/[^\/]+$/','$1',__DIR__);
+/// windows
+$root = preg_replace('/^(.*)(\\\)[^(\\\)]+(\\\)[^(\\\)]+(\\\)[^(\\\)]+(\\\)[^(\\\)]+(\\\)[^(\\\)]+(\\\)[^(\\\)]+(\\\)[^(\\\)]+(\\\)[^(\\\)]+$/','$1',$root);
+/// make path a directory
+$root .= DIRECTORY_SEPARATOR;
 
 $options = array_slice($argv,2);
 
