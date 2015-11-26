@@ -1,19 +1,24 @@
 <?php
 
-$root = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR;
+/// unix systems
+$root = preg_replace('/^(.*)\/[^\/]+\/[^\/]+\/[^\/]+\/[^\/]+\/[^\/]+\/[^\/]+\/[^\/]+\/[^\/]+$/','$1',__DIR__);
+/// windows
+$root = preg_replace('/^(.*)(\\\)[^(\\\)]+(\\\)[^(\\\)]+(\\\)[^(\\\)]+(\\\)[^(\\\)]+(\\\)[^(\\\)]+(\\\)[^(\\\)]+(\\\)[^(\\\)]+(\\\)[^(\\\)]+$/','$1',$root);
+/// make path a directory
+$root .= DIRECTORY_SEPARATOR;
 
 require $root.'vendor'.DIRECTORY_SEPARATOR.'autoload.php';
 
 /// import autoloader
 require_once($root.'src/app/Autoloader.php');
 
-/// set the base directory where your project is located 
+/// set the base directory where your project is located
 \Autoloader::setBaseDir($root);
 
-/// add class directories (without the base directory) 
-\Autoloader::addClassDir(array( 
+/// add class directories (without the base directory)
+\Autoloader::addClassDir([
 	'',
-));
+]);
 
 $options = array_slice($argv,2);
 
