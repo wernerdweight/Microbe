@@ -11,6 +11,7 @@ use WernerDweight\Microbe\framework\twig\AssetExtension;
 use WernerDweight\Microbe\framework\twig\CanonicalizeExtension;
 use WernerDweight\Microbe\framework\twig\PathExtension;
 use WernerDweight\Microbe\framework\twig\RenderExtension;
+use WernerDweight\Microbe\framework\twig\GeneralExtension;
 use WernerDweight\Microbe\framework\parenhancer\Parenhancer;
 use WernerDweight\Microbe\framework\gatekeeper\Gatekeeper;
 use WernerDweight\Microbe\framework\formbuilder\Twig\Extension\FormExtension;
@@ -26,9 +27,9 @@ class Microbe{
 		/// initialize twig
 		\Twig_Autoloader::register();
 		$loader = new \Twig_Loader_Filesystem($configuration['twig']['pathToTemplates']);
-		$twig = new \Twig_Environment($loader, array(
-		    'cache' => $env !== 'prod' ? false : $configuration['twig']['pathToCache'],
-		));
+		$twig = new \Twig_Environment($loader, [
+			'cache' => $env !== 'prod' ? false : $configuration['twig']['pathToCache'],
+		]);
 
 		/// initialize dobee
 		$dobee = null;
@@ -55,6 +56,7 @@ class Microbe{
 		$twig->addExtension(new PathExtension($router));
 		$twig->addExtension(new RenderExtension($router));
 		$twig->addExtension(new FormExtension($twig));
+		$twig->addExtension(new GeneralExtension);
 
 		/// initialize canonicaler
 		$canonicalizer = new Canonicalizer;

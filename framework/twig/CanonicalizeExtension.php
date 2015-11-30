@@ -8,7 +8,7 @@ class CanonicalizeExtension extends \Twig_Extension
 {
 
     public function getFilters(){
-        return array(
+        return [
             new \Twig_SimpleFilter(
                 'canonicalize',
                 array(
@@ -16,7 +16,7 @@ class CanonicalizeExtension extends \Twig_Extension
                     'canonicalize'
                 )
             )
-        );
+        ];
     }
 
     public function canonicalize($value){
@@ -24,6 +24,6 @@ class CanonicalizeExtension extends \Twig_Extension
     }
 
     public function getName(){
-        return 'WdCanonicalizeExtension';
+        return 'CanonicalizeExtension';
     }
 }

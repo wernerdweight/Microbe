@@ -15,14 +15,14 @@ class RenderExtension extends \Twig_Extension
 
     public function getFunctions(){
         $router = $this->router;
-        return array(
-            new \Twig_SimpleFunction('render',function($controller,$action,$options = array()) use ($router){
+        return [
+            new \Twig_SimpleFunction('render',function($controller,$action,$options = []) use ($router){
                 return $router->render($controller,$action,$options);
             }),
-        );
+        ];
     }
 
     public function getName(){
-        return 'WdRenderExtension';
+        return 'RenderExtension';
     }
 }

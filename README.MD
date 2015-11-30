@@ -14,9 +14,9 @@ Installation
 
 ```js
 	{
-	    "require": {
-	        "wernerdweight/microbe": "~1.0"
-	    }
+    "require": {
+        "wernerdweight/microbe": "~1.0"
+        }
 	}
 ```
 
