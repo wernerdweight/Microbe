@@ -100,13 +100,24 @@ class Kernel{
 		);
 	}
 
+	protected function determineRootPath(){
+		/// unix systems
+		$root = preg_replace('/^(.*)\/[^\/]+\/[^\/]+\/[^\/]+\/[^\/]+\/[^\/]+\/[^\/]+\/[^\/]+$/','$1',__DIR__);
+		/// windows
+		$root = preg_replace('/^(.*)(\\\)[^(\\\)]+(\\\)[^(\\\)]+(\\\)[^(\\\)]+(\\\)[^(\\\)]+(\\\)[^(\\\)]+(\\\)[^(\\\)]+(\\\)[^(\\\)]+$/','$1',$root);
+		/// make path a directory
+		$root .= DIRECTORY_SEPARATOR;
+		
+		return $root;
+	}
+
 	protected function resolveRequestData(){
 		/// determine current root url
 		$this->root = $this->determineRootUri();
 		/// determine current base url
 		$this->base = $this->determineBaseUri();
 		/// set current root path
-		$this->rootPath = __DIR__.'/../../../';
+		$this->rootPath = $this->determineRootPath();
 		/// check for referer
 		$this->referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null;
 		/// get current uri
