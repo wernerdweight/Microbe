@@ -15,14 +15,14 @@ class PathExtension extends \Twig_Extension
 
     public function getFunctions(){
         $router = $this->router;
-        return array(
-            new \Twig_SimpleFunction('path',function($pathName,$options = array(),$absolute = false) use ($router){
+        return [
+            new \Twig_SimpleFunction('path',function($pathName,$options = [],$absolute = false) use ($router){
                 return $router->path($pathName,$options,$absolute);
             }),
-        );
+        ];
     }
 
     public function getName(){
-        return 'WdPathExtension';
+        return 'PathExtension';
     }
 }

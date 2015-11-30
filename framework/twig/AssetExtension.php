@@ -18,7 +18,7 @@ class AssetExtension extends \Twig_Extension
     }
 
     public function getFunctions(){
-        return array(
+        return [
             new \Twig_SimpleFunction('asset',function($assetPath,$absolute = false){
                 $path = '';
                 if($absolute === true){
@@ -37,10 +37,10 @@ class AssetExtension extends \Twig_Extension
 
                 return $path;
             }),
-        );
+        ];
     }
 
     public function getName(){
-        return 'WdAssetExtension';
+        return 'AssetExtension';
     }
 }
