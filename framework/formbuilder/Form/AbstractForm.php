@@ -23,7 +23,7 @@ abstract class AbstractForm implements FormInterface{
 
 	protected function loadDataFromEntity(){
 		foreach ($this->fields as $field => $attributes) {
-			if($attributes['type'] !== 'button'){
+			if(false === in_array($attributes['type'],['separator','button'])){
 				$this->data[$field] = $this->entity->{'get'.ucfirst($field)}();
 			}
 		}
@@ -39,15 +39,17 @@ abstract class AbstractForm implements FormInterface{
 
 	public function bindData(){
 		foreach ($this->fields as $field => $attributes) {
-			if($attributes['type'] === 'checkbox'){
-				$this->data[$field] = isset($_POST['form'][$field]);
-			}
-			else{
-				$this->data[$field] = $_POST['form'][$field];
-			}
+			if($attributes['type'] !== 'separator'){
+				if(true === in_array($attributes['type'],['checkbox','button'])){
+					$this->data[$field] = isset($_POST['form'][$field]);
+				}
+				else{
+					$this->data[$field] = $_POST['form'][$field];
+				}
 
-			if($attributes['type'] !== 'button'){
-				$this->entity->{'set'.ucfirst($field)}($this->data[$field]);
+				if($attributes['type'] !== 'button'){
+					$this->entity->{'set'.ucfirst($field)}($this->data[$field]);
+				}
 			}
 		}
 		return $this;
