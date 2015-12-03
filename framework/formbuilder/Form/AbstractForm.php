@@ -32,7 +32,7 @@ abstract class AbstractForm implements FormInterface{
 	public function __construct($fields,$entity){
 		$this->entity = $entity;
 		$this->fields = $this->setupFields($fields);
-		$this->data = $this->loadDataFromEntity();
+		$this->loadDataFromEntity();
 		$this->validator = new Validator();
 		$this->errors = [];
 	}
