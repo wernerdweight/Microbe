@@ -17,6 +17,8 @@ abstract class AbstractController{
 		$this->context = array(
 			'vars' => array(),
 		);
+		$this->kernel->service('twig')->addGlobal('g_current_route',$this->kernel->service('router')->getCurrentRoute());
+		$this->kernel->service('twig')->addGlobal('g_current_route_name',$this->kernel->service('router')->getCurrentRouteName());
 		$this->initialize();
 	}
 
