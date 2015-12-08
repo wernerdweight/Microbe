@@ -17,9 +17,12 @@ class Router
 
     protected $routes;
     protected $kernel;
+    protected $currentRoute;
+    protected $currentRouteName;
 
     public function __construct($path = null){
         $this->loadConfiguration($path);
+        $this->currentRoute = $this->currentRouteName = null;
     }
 
     public function registerKernel(Kernel $kernel){
@@ -62,6 +65,8 @@ class Router
                 $regExp = preg_replace('/\{[^\}]+\}/','[a-zA-Z0-9_\-\.%\+;=]+',$route['path']);
                 $regExp = preg_replace('/\//','\/',$regExp);
                 if(preg_match('/^'.$regExp.'$/',$path)){
+                    $this->currentRouteName = $routeName;
+                    $this->currentRoute = $route;
                     return $route;
                 }
             }
@@ -158,6 +163,14 @@ class Router
 
     public function getBase(){
         return $this->kernel->getBase();
+    }
+
+    public function getCurrentRoute(){
+        return $this->currentRoute;
+    }
+
+    public function getCurrentRouteName(){
+        return $this->currentRouteName;
     }
 
 }
