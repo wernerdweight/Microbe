@@ -3,6 +3,7 @@
 namespace WernerDweight\Microbe;
 
 use WernerDweight\Dobee\Dobee;
+use WernerDweight\MicrobeImageManager\Utils\ImageManagerUtility;
 use WernerDweight\Microbe\framework\kernel\Kernel;
 use WernerDweight\Microbe\framework\router\Router;
 use WernerDweight\Microbe\framework\canonicalizer\Canonicalizer;
@@ -33,7 +34,7 @@ class Microbe{
 
 		/// initialize dobee
 		$dobee = null;
-		if($configuration['dobee']['enable'] === true){
+		if(isset($configuration['dobee']) && $configuration['dobee']['enable'] === true){
 			$dobee = new Dobee(
 				$parenhancer->enhance(
 					file_get_contents($configuration['dobee']['pathToConfiguration'])
@@ -41,6 +42,17 @@ class Microbe{
 				$configuration['dobee']['pathToEntities'],
 				$configuration['dobee']['entityNamespace']
 			);
+		}
+
+		/// initialize image manager
+		$imageManager = null;
+		if(isset($configuration['imageManager']) && $configuration['imageManager']['enable'] === true){
+			$imageManaget = new ImageManagerUtility([
+				'versions' => $configuration['wd_image_manager']['versions'],
+				'upload_root' => $configuration['wd_image_manager']['upload_root'],
+				'upload_path' => $configuration['wd_image_manager']['upload_path'],
+				'secret' => $configuration['wd_image_manager']['secret'],
+			]);
 		}
 
 		/// initialize router
@@ -71,6 +83,7 @@ class Microbe{
 		$services = [
 			'twig' => $twig,
 			'dobee' => $dobee,
+			'imageManager' => $imageManager,
 			'router' => $router,
 			'canonicalizer' => $canonicalizer,
 			'tokenizer' => $tokenizer,

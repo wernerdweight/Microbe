@@ -25,7 +25,8 @@
     "require-dev": {},
 
     "suggest": {
-        "wernerdweight/dobee": "0.2.*@dev"
+        "wernerdweight/dobee": "0.2.*@dev",
+        "wernerdweight/microbe-image-manager": "~1.0"
     },
 
     "autoload": {
