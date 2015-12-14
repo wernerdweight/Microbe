@@ -46,8 +46,8 @@ class Microbe{
 
 		/// initialize image manager
 		$imageManager = null;
-		if(isset($configuration['imageManager']) && $configuration['imageManager']['enable'] === true){
-			$imageManaget = new ImageManagerUtility([
+		if(isset($configuration['wd_image_manager']) && $configuration['wd_image_manager']['enable'] === true){
+			$imageManager = new ImageManagerUtility([
 				'versions' => $configuration['wd_image_manager']['versions'],
 				'upload_root' => $configuration['wd_image_manager']['upload_root'],
 				'upload_path' => $configuration['wd_image_manager']['upload_path'],
