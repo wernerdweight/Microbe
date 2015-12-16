@@ -48,7 +48,12 @@ abstract class AbstractForm implements FormInterface{
 				}
 
 				if($attributes['type'] !== 'button'){
-					$this->entity->{'set'.ucfirst($field)}($this->data[$field]);
+					if($attributes['type'] === 'repeatedPassword'){
+						$this->entity->{'set'.ucfirst($field)}($this->data[$field]['password']);
+					}
+					else{
+						$this->entity->{'set'.ucfirst($field)}($this->data[$field]);
+					}
 				}
 			}
 		}
@@ -61,7 +66,12 @@ abstract class AbstractForm implements FormInterface{
 		foreach ($this->fields as $field => $attributes) {
 			if(isset($attributes['constraints']) && count($attributes['constraints']) > 0){
 				foreach ($attributes['constraints'] as $constraint => $options) {
-					$error = Validator::validate($this->entity->{'get'.ucfirst($field)}(),$constraint,$options);
+					if($attributes['type'] === 'repeatedPassword' && $constraint === 'repeated'){
+						$error = Validator::validate($this->data[$field],$constraint,$options);
+					}
+					else{
+						$error = Validator::validate($this->entity->{'get'.ucfirst($field)}(),$constraint,$options);
+					}
 					if($error !== null){
 						$this->fields[$field]['errors'][] = $error;
 						$errorCount++;
