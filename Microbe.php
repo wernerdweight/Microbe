@@ -55,6 +55,13 @@ class Microbe{
 			]);
 		}
 
+		/// initialize mailer
+		$mailer = null;
+		if(isset($configuration['swiftmailer']) && $configuration['swiftmailer']['enable'] === true){
+			$transport = \Swift_MailTransport::newInstance();
+			$mailer = \Swift_Mailer::newInstance($transport);
+		}
+
 		/// initialize router
 		$router = new Router($configuration['router']['path']);
 
@@ -84,6 +91,7 @@ class Microbe{
 			'twig' => $twig,
 			'dobee' => $dobee,
 			'imageManager' => $imageManager,
+			'mailer' => $mailer,
 			'router' => $router,
 			'canonicalizer' => $canonicalizer,
 			'tokenizer' => $tokenizer,
