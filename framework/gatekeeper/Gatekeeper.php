@@ -3,6 +3,7 @@
 namespace WernerDweight\Microbe\framework\gatekeeper;
 
 use WernerDweight\Microbe\framework\gatekeeper\AbstractGatekeeper;
+use WernerDweight\Microbe\framework\gatekeeper\UserInterface;
 
 class Gatekeeper extends AbstractGatekeeper
 {
@@ -47,10 +48,14 @@ class Gatekeeper extends AbstractGatekeeper
 		return $this->user;
 	}
 
-	public function setUser($user){
+	public function setUser(UserInterface $user){
 		$this->user = $user;
 		$_SESSION[self::GATEKEEPER_ID]['user'] = $user;
 		return $this;
+	}
+
+	public function getRole(){
+		return $this->user !== null ? unserialize($this->user->getRole()) : null;
 	}
 
 	public function logOut(){
