@@ -62,8 +62,11 @@ class Microbe{
 			$mailer = \Swift_Mailer::newInstance($transport);
 		}
 
+		/// initialize gatekeeper
+		$gatekeeper = Gatekeeper::getInstance();
+
 		/// initialize router
-		$router = new Router($configuration['router']['path']);
+		$router = new Router($configuration['router']['path'],$configuration['router']['firewall'],$gatekeeper->getRole());
 
 		/// add twig extensions
 		$twig->addExtension(new AssetExtension(
@@ -82,9 +85,6 @@ class Microbe{
 
 		/// initialize tokenizer
 		$tokenizer = new Tokenizer;
-
-		/// initialize gatekeeper
-		$gatekeeper = Gatekeeper::getInstance();
 
 		/// create an array of services to be passed to the application
 		$services = [

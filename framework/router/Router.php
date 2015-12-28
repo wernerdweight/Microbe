@@ -19,9 +19,13 @@ class Router
     protected $kernel;
     protected $currentRoute;
     protected $currentRouteName;
+    protected $firewallRules;
+    protected $roles;
 
-    public function __construct($path = null){
+    public function __construct($path = null,$firewallRules = [],$roles = []){
         $this->loadConfiguration($path);
+        $this->firewallRules = $firewallRules;
+        $this->roles = $roles;
         $this->currentRoute = $this->currentRouteName = null;
     }
 
@@ -113,6 +117,19 @@ class Router
         return $options;
     }
 
+    protected function checkFirewallRules($path){
+        if(true === is_array($this->firewallRules) && count($this->firewallRules) > 0){
+            foreach ($this->firewallRules as $role => $rule) {
+                if(preg_match($rule,$path)){
+                    if(true !== is_array($this->roles) || count($this->roles) <= 0 || false === in_array($role,$this->roles)){
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
     public function render($controller,$action,$options = array()){
 
         echo $this->getControllerResponse($controller,$action,$options);
@@ -121,6 +138,11 @@ class Router
     public function route($path){
         if(!($route = $this->findRouteByPath($path))){
             throw new PageNotFoundException('Route for path "'.$path.'" not found');
+        }
+
+        /// check firewall rules
+        if(true !== $this->checkFirewallRules($path)){
+            throw new UnauthorizedException('Access denied for "'.$path.'"!');
         }
 
         if(isset($route['redirect'])){

@@ -98,6 +98,10 @@ abstract class AbstractController{
 		return $this->kernel->service('gatekeeper')->getUser();
 	}
 
+	protected function getRole(){
+		return $this->kernel->service('gatekeeper')->getRole();
+	}
+
 	protected function loginUser($user){
 		$this->kernel->service('gatekeeper')->setLogged(true)->setUser($user);
 	}
