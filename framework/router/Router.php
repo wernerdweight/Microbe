@@ -142,7 +142,12 @@ class Router
 
         /// check firewall rules
         if(true !== $this->checkFirewallRules($path)){
-            throw new UnauthorizedException('Access denied for "'.$path.'"!');
+            if($loginRoute = $this->findRouteByName('login')){
+                $this->redirect($this->path('login'));
+            }
+            else{
+                throw new UnauthorizedException('Access denied for "'.$path.'"!');
+            }
         }
 
         if(isset($route['redirect'])){
