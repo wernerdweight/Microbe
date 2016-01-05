@@ -1,14 +1,14 @@
 {% if field.expanded is defined and field.expanded == true %}{# checkbox/radio #}
 	{% for key,option in field.options %}
 		{% if field.multiple is defined and field.multiple == true %}{# checkbox #}
-			<input type="checkbox" id="form_{{name}}_{{loop.index0}}" name="form[{{name}}]" value="{{key}}"{{ formAttributes(field.attributes) }}{% if key in value %} checked="checked"{% endif %}>
+			<input type="checkbox" id="form_{{formParents(formParents,'id')}}{{name}}_{{loop.index0}}" name="form{{formParents(formParents,'name')}}[{{name}}]" value="{{key}}"{{ formAttributes(field.attributes) }}{% if key in value %} checked="checked"{% endif %}>
 		{% else %}{# radio #}
-			<input type="radio" id="form_{{name}}_{{loop.index0}}" name="form[{{name}}]" value="{{key}}"{{ formAttributes(field.attributes) }}{% if key == value %} checked="checked"{% endif %}>
+			<input type="radio" id="form_{{formParents(formParents,'id')}}{{name}}_{{loop.index0}}" name="form{{formParents(formParents,'name')}}[{{name}}]" value="{{key}}"{{ formAttributes(field.attributes) }}{% if key == value %} checked="checked"{% endif %}>
 		{% endif %}
 		<label for="form_{{name}}_{{loop.index0}}">{{option}}</label>
 	{% endfor %}
 {% else %}{# selectbox #}
-	<select id="form_{{name}}" name="form[{{name}}]" value="{{value}}"{{ formAttributes(field.attributes) }}{% if field.multiple is defined and field.multiple == true %} multiple="multiple"{% endif %}>
+	<select id="form_{{formParents(formParents,'id')}}{{name}}" name="form{{formParents(formParents,'name')}}[{{name}}]" value="{{value}}"{{ formAttributes(field.attributes) }}{% if field.multiple is defined and field.multiple == true %} multiple="multiple"{% endif %}>
 		{% for key,option in field.options %}
 			<option value="{{key}}"{% if value == key %} selected="selected"{% endif %}>{{option}}</option>
 		{% endfor %}

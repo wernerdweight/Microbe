@@ -1,1 +1,1 @@
-<textarea id="form_{{name}}" name="form[{{name}}]"{{ formAttributes(field.attributes) }}>{{value}}</textarea>
+<textarea id="form_{{formParents(formParents,'id')}}{{name}}" name="form{{formParents(formParents,'name')}}[{{name}}]"{{ formAttributes(field.attributes) }}>{{value}}</textarea>

@@ -1,4 +1,4 @@
-<form action="{{path}}" {% if attributes.method is not defined %} method="post"{% endif %}{{ formAttributes(attributes) }}>
+{% if path is not null %}<form action="{{path}}" {% if attributes.method is not defined %} method="post"{% endif %}{{ formAttributes(attributes) }}>{% endif %}
 	{% for name,field in form.fields %}
 		{% if field.container is not defined or field.container != false %}<div{{ formAttributes(field.containerAttributes) }}>{% endif %}
 			{% if field.label is defined and field.label != false %}
@@ -14,8 +14,8 @@
 				</ul>
 			{% endif %}
 			{% if field.wrapper is not defined or field.wrapper != false %}<div{{ formAttributes(field.wrapperAttributes) }}>{% endif %}
-				{{ formField(name,field,form.data[name]) }}
+				{{ formField(name,field,form.data[name],form.parents) }}
 			{% if field.wrapper is not defined or field.wrapper != false %}</div>{% endif %}
 		{% if field.container is not defined or field.container != false %}</div>{% endif %}
 	{% endfor %}
-</form>
+{% if path is not null %}</form>{% endif %}

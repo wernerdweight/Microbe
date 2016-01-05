@@ -2,6 +2,8 @@
 
 namespace WernerDweight\Microbe\framework\formbuilder\Twig\Extension;
 
+use WernerDweight\Microbe\framework\formbuilder\Factory\FormFactory;
+
 class FormExtension extends \Twig_Extension
 {
 
@@ -23,6 +25,10 @@ class FormExtension extends \Twig_Extension
                     'attributes' => $attributes
                 ]);
             },['is_safe' => ['html']]),
+            new \Twig_SimpleFunction('formEmbed',function($field,$formClass,$formParents = [],$attributes = []) use ($twig){
+                $form = FormFactory::createForm($field,$formClass,$formParents);
+                return $form;
+            },['is_safe' => ['html']]),
             new \Twig_SimpleFunction('formAttributes',function($attributes = null) use ($twig){
                 $attributesString = '';
                 if($attributes !== null){
@@ -32,11 +38,24 @@ class FormExtension extends \Twig_Extension
                 }
                 return $attributesString;
             },['is_safe' => ['html']]),
-            new \Twig_SimpleFunction('formField',function($name,$field,$value) use ($twig){
+            new \Twig_SimpleFunction('formParents',function($formParents,$type = 'name') use ($twig){
+                $parentString = '';
+                if(count($formParents)){
+                    if($type === 'name'){
+                        $parentString = '['.implode('][',$formParents).']';
+                    }
+                    else if($type === 'id'){
+                        $parentString = implode('_',$formParents).'_';
+                    }
+                }
+                return $parentString;
+            },['is_safe' => ['html']]),
+            new \Twig_SimpleFunction('formField',function($name,$field,$value,$formParents = []) use ($twig){
                 return $twig->render('Theme/'.$field['type'].'.html.twig',[
                     'name' => $name,
                     'field' => $field,
-                    'value' => $value
+                    'value' => $value,
+                    'formParents' => $formParents,
                 ]);
             },['is_safe' => ['html']]),
         ];

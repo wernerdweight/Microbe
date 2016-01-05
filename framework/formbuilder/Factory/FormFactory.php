@@ -10,7 +10,7 @@ use WernerDweight\Microbe\framework\formbuilder\Form\GeneratedForm;
 
 class FormFactory{
 
-	public static function createForm($entity,$formName = null){
+	public static function createForm($entity,$formName = null,$formParents = []){
 		/// construct form configuration path
 		if(null === $formName){
 			$className = get_class($entity);
@@ -31,7 +31,7 @@ class FormFactory{
 		}
 		
 		/// create and return form generated according to the configuration
-		return new GeneratedForm($fields,$entity);
+		return new GeneratedForm($fields,$entity,$formParents);
 	}
 
 }
