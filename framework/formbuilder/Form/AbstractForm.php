@@ -3,6 +3,7 @@
 namespace WernerDweight\Microbe\framework\formbuilder\Form;
 
 use WernerDweight\Microbe\framework\formbuilder\Exception\InvalidConfigurationException;
+use WernerDweight\Microbe\framework\formbuilder\Factory\FormFactory;
 use WernerDweight\Microbe\framework\formbuilder\Form\FormInterface;
 use WernerDweight\Microbe\framework\validator\Validator;
 
@@ -13,6 +14,7 @@ abstract class AbstractForm implements FormInterface{
 	protected $fields;
 	protected $entity;
 	protected $validator;
+	protected $parents;
 
 	protected function setupFields($fields){
 		if(!is_array($fields) || count($fields) <= 0){
@@ -23,32 +25,41 @@ abstract class AbstractForm implements FormInterface{
 
 	protected function loadDataFromEntity(){
 		foreach ($this->fields as $field => $attributes) {
-			if(false === in_array($attributes['type'],['separator','button'])){
+			if(false === in_array($attributes['type'],['separator','void','button'])){
 				$this->data[$field] = $this->entity->{'get'.ucfirst($field)}();
 			}
 		}
 	}
 
-	public function __construct($fields,$entity){
+	public function __construct($fields,$entity,$parents = []){
 		$this->entity = $entity;
 		$this->fields = $this->setupFields($fields);
 		$this->loadDataFromEntity();
 		$this->validator = new Validator();
 		$this->errors = [];
+		$this->parents = $parents;
 	}
 
 	public function bindData(){
+		$basePostData = $_POST['form'];
+		foreach ($this->parents as $parent) {
+			$basePostData = $basePostData[$parent];
+		}
 		foreach ($this->fields as $field => $attributes) {
-			if($attributes['type'] !== 'separator'){
+			if(false === in_array($attributes['type'],['separator','void'])){
 				if(true === in_array($attributes['type'],['checkbox','button'])){
-					$this->data[$field] = isset($_POST['form'][$field]);
+					$this->data[$field] = isset($basePostData[$field]);
 				}
 				else{
-					$this->data[$field] = $_POST['form'][$field];
+					$this->data[$field] = $basePostData[$field];
 				}
 
 				if($attributes['type'] !== 'button'){
-					if($attributes['type'] === 'repeatedPassword'){
+					if($attributes['type'] === 'entity'){
+						$embededForm = FormFactory::createForm($this->entity->{'get'.ucfirst($field)}(),$attributes['form'],array_merge($this->parents,[$field]));
+						$this->entity->{'set'.ucfirst($field)}($embededForm->bindData()->getEntity());
+					}
+					else if($attributes['type'] === 'repeatedPassword'){
 						$this->entity->{'set'.ucfirst($field)}($this->data[$field]['password']);
 					}
 					else{
@@ -94,6 +105,14 @@ abstract class AbstractForm implements FormInterface{
 
 	public function getFields(){
 		return $this->fields;
+	}
+
+	public function getParents(){
+		return $this->parents;
+	}
+
+	public function getEntity(){
+		return $this->entity;
 	}
 
 }

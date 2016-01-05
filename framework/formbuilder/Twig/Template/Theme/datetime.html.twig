@@ -1,1 +1,1 @@
-<input type="datetime-local" id="form_{{name}}" name="form[{{name}}]" value="{{value}}"{{ formAttributes(field.attributes) }}>
+<input type="datetime-local" id="form_{{formParents(formParents,'id')}}{{name}}" name="form{{formParents(formParents,'name')}}[{{name}}]" value="{{value}}"{{ formAttributes(field.attributes) }}>
