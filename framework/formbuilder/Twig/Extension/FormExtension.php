@@ -25,10 +25,6 @@ class FormExtension extends \Twig_Extension
                     'attributes' => $attributes
                 ]);
             },['is_safe' => ['html']]),
-            new \Twig_SimpleFunction('formEmbed',function($field,$formClass,$formParents = [],$attributes = []) use ($twig){
-                $form = FormFactory::createForm($field,$formClass,$formParents);
-                return $form;
-            },['is_safe' => ['html']]),
             new \Twig_SimpleFunction('formAttributes',function($attributes = null) use ($twig){
                 $attributesString = '';
                 if($attributes !== null){
@@ -50,8 +46,9 @@ class FormExtension extends \Twig_Extension
                 }
                 return $parentString;
             },['is_safe' => ['html']]),
-            new \Twig_SimpleFunction('formField',function($name,$field,$value,$formParents = []) use ($twig){
+            new \Twig_SimpleFunction('formField',function($form,$name,$field,$value,$formParents = []) use ($twig){
                 return $twig->render('Theme/'.$field['type'].'.html.twig',[
+                    'form' => $form,
                     'name' => $name,
                     'field' => $field,
                     'value' => $value,
