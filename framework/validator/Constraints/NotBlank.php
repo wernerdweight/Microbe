@@ -2,7 +2,7 @@
 
 namespace WernerDweight\Microbe\framework\validator\Constraints;
 
-use WernerDweight\Microbe\framework\validator\constraints\ConstraintInterface;
+use WernerDweight\Microbe\framework\validator\Constraints\ConstraintInterface;
 
 class NotBlank implements ConstraintInterface{
 
