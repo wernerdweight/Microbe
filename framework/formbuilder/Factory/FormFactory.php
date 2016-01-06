@@ -16,7 +16,7 @@ class FormFactory{
 			$className = get_class($entity);
 			$formName = strtolower(substr($className,strrpos($className,'\\') + 1));
 		}
-		$configurationFilePath = 'src/app/forms/'.$formName.'.form.yml';
+		$configurationFilePath = 'src/app/forms/'.str_replace(':',DIRECTORY_SEPARATOR,$formName).'.form.yml';
 
 		/// chceck that configuration exists
 		if(!is_file($configurationFilePath)){
