@@ -3,9 +3,7 @@ Werner Dweight's Microbe
 
 **Warning:**
 
-> This utility IS STILL UNDER DEVELOPMENT and though it may work in a way
-> quite a lot of code is still missing! Usage of this utility is discouraged
-> until the version 1.0 is released!
+> This utility IS STILL UNDER DEVELOPMENT! Usage of this utility is discouraged!
 
 Installation
 ------------

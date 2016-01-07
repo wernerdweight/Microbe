@@ -30,6 +30,7 @@ class Kernel{
 		$this->service('twig')->addGlobal('g_method',$this->method);
 		$this->service('twig')->addGlobal('g_user',$this->service('gatekeeper')->getUser());
 		$this->service('twig')->addGlobal('g_logged',$this->service('gatekeeper')->isLogged());
+		$this->service('twig')->addGlobal('g_flashmessenger',$this->service('flashmessenger'));
 		
 		/// set up router
 		$this->service('router')->registerKernel($this);

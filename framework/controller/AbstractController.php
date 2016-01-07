@@ -110,6 +110,24 @@ abstract class AbstractController{
 		$this->kernel->service('gatekeeper')->logOut();
 	}
 
+	/// flashmessenger
+
+	protected function addFlashMessage($type,$message){
+		return $this->kernel->service('flashmessenger')->addMessage($type,$message);
+	}
+
+	protected function forceFlashMessage($type,$message){
+		return $this->kernel->service('flashmessenger')->forceMessage($type,$message);
+	}
+
+	protected function hasFlashMessages($type){
+		return $this->kernel->service('flashmessenger')->hasMessages($type);
+	}
+
+	protected function getFlashMessages($type){
+		return $this->kernel->service('flashmessenger')->getMessages($type);
+	}
+
 }
 
 ?>
