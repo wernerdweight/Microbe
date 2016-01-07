@@ -16,6 +16,7 @@ use WernerDweight\Microbe\framework\twig\GeneralExtension;
 use WernerDweight\Microbe\framework\parenhancer\Parenhancer;
 use WernerDweight\Microbe\framework\gatekeeper\Gatekeeper;
 use WernerDweight\Microbe\framework\formbuilder\Twig\Extension\FormExtension;
+use WernerDweight\Microbe\framework\flashmessenger\FlashMessenger;
 
 class Microbe{
 
@@ -65,6 +66,9 @@ class Microbe{
 		/// initialize gatekeeper
 		$gatekeeper = Gatekeeper::getInstance();
 
+		/// initialize flashmessenger
+		$flashmessenger = FlashMessenger::getInstance();
+
 		/// initialize router
 		$router = new Router($configuration['router']['path'],$configuration['router']['firewall'],$gatekeeper->getRole());
 
@@ -97,6 +101,7 @@ class Microbe{
 			'tokenizer' => $tokenizer,
 			'parenhancer' => $parenhancer,
 			'gatekeeper' => $gatekeeper,
+			'flashmessenger' => $flashmessenger,
 		];
 		/// run app
 		$kernel = new Kernel($services,$configuration);
