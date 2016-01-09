@@ -128,6 +128,16 @@ abstract class AbstractController{
 		return $this->kernel->service('flashmessenger')->getMessages($type);
 	}
 
+	/// translator
+
+	protected function translate($translation,$parameters = [],$locale = null){
+		return $this->kernel->service('translator')->translate($translation,$parameters,$locale);
+	}
+
+	protected function setTranslationLocale($locale){
+		return $this->kernel->service('translator')->setLocale($locale);
+	}
+
 }
 
 ?>

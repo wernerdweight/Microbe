@@ -11,10 +11,6 @@ class GeneralExtension extends \Twig_Extension
         ];
     }
 
-    public function canonicalize($value){
-        return Canonicalizer::canonicalize($value);
-    }
-
     public function getName(){
         return 'GeneralExtension';
     }
