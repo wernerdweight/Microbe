@@ -3,6 +3,7 @@
 namespace WernerDweight\Microbe\framework\kernel;
 
 use WernerDweight\Microbe\framework\router\Exception\AbstractException as RouterException;
+use WernerDweight\Microbe\framework\traverser\Traverser;
 
 class Kernel{
 
@@ -161,17 +162,7 @@ class Kernel{
 	}
 
 	public function configuration($key){
-		$keys = explode('.',$key);
-		$currentNode = $this->configuration;
-
-		foreach ($keys as $key) {
-			if(false === isset($currentNode[$key])){
-				return null;
-			}
-			$currentNode = $currentNode[$key];
-		}
-
-		return $currentNode;
+		return Traverser::getFromArray($this->configuration,$key,'.');
 	}
 
 }

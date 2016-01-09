@@ -8,11 +8,13 @@ use WernerDweight\Microbe\framework\kernel\Kernel;
 use WernerDweight\Microbe\framework\router\Router;
 use WernerDweight\Microbe\framework\canonicalizer\Canonicalizer;
 use WernerDweight\Microbe\framework\tokenizer\Tokenizer;
+use WernerDweight\Microbe\framework\translator\Translator;
 use WernerDweight\Microbe\framework\twig\AssetExtension;
 use WernerDweight\Microbe\framework\twig\CanonicalizeExtension;
 use WernerDweight\Microbe\framework\twig\PathExtension;
 use WernerDweight\Microbe\framework\twig\RenderExtension;
 use WernerDweight\Microbe\framework\twig\GeneralExtension;
+use WernerDweight\Microbe\framework\twig\TranslateExtension;
 use WernerDweight\Microbe\framework\parenhancer\Parenhancer;
 use WernerDweight\Microbe\framework\gatekeeper\Gatekeeper;
 use WernerDweight\Microbe\framework\formbuilder\Twig\Extension\FormExtension;
@@ -72,6 +74,13 @@ class Microbe{
 		/// initialize router
 		$router = new Router($configuration['router']['path'],$configuration['router']['firewall'],$gatekeeper->getRole());
 
+		/// initialize translator
+		$translator = null;
+		if(isset($configuration['translator']) && $configuration['translator']['enable'] === true){
+			$translator = new Translator($configuration['translator']['paths']);
+			$twig->addExtension(new TranslateExtension($translator));
+		}
+
 		/// add twig extensions
 		$twig->addExtension(new AssetExtension(
 			$router,
@@ -102,6 +111,7 @@ class Microbe{
 			'parenhancer' => $parenhancer,
 			'gatekeeper' => $gatekeeper,
 			'flashmessenger' => $flashmessenger,
+			'translator' => $translator,
 		];
 		/// run app
 		$kernel = new Kernel($services,$configuration);
