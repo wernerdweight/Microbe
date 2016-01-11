@@ -14,6 +14,7 @@ abstract class AbstractForm implements FormInterface{
 	protected $entity;
 	protected $validator;
 	protected $parents;
+	protected $options;
 	protected $embededForms;
 
 	protected function setupFields($fields){
@@ -31,6 +32,14 @@ abstract class AbstractForm implements FormInterface{
 		}
 	}
 
+	protected function setupChoiceOptions(){
+		foreach ($this->fields as $field => $attributes) {
+			if($attributes['type'] === 'choice' && true === isset($attributes['optionsCallback'])){
+				$this->fields[$field]['options'] = $attributes['optionsCallback']['class']::loadOptions($field,$this->options);
+			}
+		}
+	}
+
 	protected function loadDataFromEntity(){
 		foreach ($this->fields as $field => $attributes) {
 			if(false === in_array($attributes['type'],['separator','void','button'])){
@@ -39,15 +48,17 @@ abstract class AbstractForm implements FormInterface{
 		}
 	}
 
-	public function __construct($fields,$entity,$parents = []){
+	public function __construct($fields,$entity,$parents = [],$options = []){
 		$this->validator = new Validator();
 		
 		$this->entity = $entity;
 		$this->parents = $parents;
+		$this->options = $options;
 
 		$this->fields = $this->setupFields($fields);
 		$this->loadDataFromEntity();
 		$this->setupEmbededForms();
+		$this->setupChoiceOptions();
 	}
 
 	public function bindData(){
@@ -69,6 +80,9 @@ abstract class AbstractForm implements FormInterface{
 						$embededEntity = $this->embededForms[$field]->bindData()->getEntity();
 						$this->entity->{'set'.ucfirst($field)}($embededEntity);
 						$this->data[$field] = $embededEntity;
+					}
+					else if($attributes['type'] === 'choice' && true === isset($attributes['optionsCallback'])){
+						$this->entity->{'set'.ucfirst($field)}(isset($attributes['options'][$this->data[$field]]) ? $attributes['options'][$this->data[$field]] : null);
 					}
 					else if($attributes['type'] === 'repeatedPassword'){
 						$this->entity->{'set'.ucfirst($field)}($this->data[$field]['password']);
