@@ -5,12 +5,15 @@
 		{% else %}{# radio #}
 			<input type="radio" id="form_{{formParents(formParents,'id')}}{{name}}_{{loop.index0}}" name="form{{formParents(formParents,'name')}}[{{name}}]" value="{{key}}"{{ formAttributes(field.attributes) }}{% if key == value %} checked="checked"{% endif %}>
 		{% endif %}
-		<label for="form_{{name}}_{{loop.index0}}">{{option}}</label>
+		<label for="form_{{name}}_{{loop.index0}}">{{field.optionsCallback is defined ? attribute(option,field.optionsCallback.property) : option}}</label>
 	{% endfor %}
 {% else %}{# selectbox #}
-	<select id="form_{{formParents(formParents,'id')}}{{name}}" name="form{{formParents(formParents,'name')}}[{{name}}]" value="{{value}}"{{ formAttributes(field.attributes) }}{% if field.multiple is defined and field.multiple == true %} multiple="multiple"{% endif %}>
+	<select id="form_{{formParents(formParents,'id')}}{{name}}" name="form{{formParents(formParents,'name')}}[{{name}}]" value="{{(field.optionsCallback is defined ? attribute(value,field.optionsCallback.value) : value)}}"{{ formAttributes(field.attributes) }}{% if field.multiple is defined and field.multiple == true %} multiple="multiple"{% endif %}>
+		{% if field.emptyOption is defined %}
+			<option value="">{{field.emptyOption}}</option>
+		{% endif %}
 		{% for key,option in field.options %}
-			<option value="{{key}}"{% if value == key %} selected="selected"{% endif %}>{{option}}</option>
+			<option value="{{key}}"{% if (field.optionsCallback is defined ? attribute(value,field.optionsCallback.value) : value) == key %} selected="selected"{% endif %}>{{field.optionsCallback is defined ? attribute(option,field.optionsCallback.property) : option}}</option>
 		{% endfor %}
 	</select>
 {% endif %}
