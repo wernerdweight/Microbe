@@ -29,6 +29,14 @@ abstract class AbstractForm implements FormInterface{
 			if($attributes['type'] === 'entity'){
 				$this->embededForms[$field] = FormFactory::createForm($this->entity->{'get'.ucfirst($field)}(),$attributes['form'],array_merge($this->parents,[$field]));
 			}
+			else if($attributes['type'] === 'collection'){
+				$collection = $this->entity->{'get'.ucfirst($field)}();
+				if(null !== $collection && count($collection) > 0){
+					foreach ($collection as $key => $item) {
+						$this->embededForms[$field.'_'.intval($key)] = FormFactory::createForm($item,$attributes['form'],array_merge($this->parents,[$field.'_'.intval($key)]));
+					}
+				}
+			}
 		}
 	}
 
@@ -71,7 +79,7 @@ abstract class AbstractForm implements FormInterface{
 				if(true === in_array($attributes['type'],['checkbox','button'])){
 					$this->data[$field] = isset($basePostData[$field]);
 				}
-				else{
+				else if(false === in_array($attributes['type'],['entity','collection'])){
 					$this->data[$field] = $basePostData[$field];
 				}
 
@@ -80,6 +88,17 @@ abstract class AbstractForm implements FormInterface{
 						$embededEntity = $this->embededForms[$field]->bindData()->getEntity();
 						$this->entity->{'set'.ucfirst($field)}($embededEntity);
 						$this->data[$field] = $embededEntity;
+					}
+					else if($attributes['type'] === 'collection'){
+						$collection = $this->entity->{'get'.ucfirst($field)}();
+						if(null !== $collection && count($collection) > 0){
+							$embededCollection = [];
+							foreach ($collection as $key => $item) {
+								$embededCollection[$key] = $this->embededForms[$field.'_'.intval($key)]->bindData()->getEntity();
+							}
+							$this->entity->{'set'.ucfirst($field)}($embededCollection);
+							$this->data[$field] = $embededCollection;
+						}
 					}
 					else if($attributes['type'] === 'choice' && true === isset($attributes['optionsCallback'])){
 						$this->entity->{'set'.ucfirst($field)}(isset($attributes['options'][$this->data[$field]]) ? $attributes['options'][$this->data[$field]] : null);
@@ -105,6 +124,16 @@ abstract class AbstractForm implements FormInterface{
 					if($attributes['type'] === 'entity'){
 						if($this->embededForms[$field]->isValid() !== true){
 							$errorCount++;
+						}
+					}
+					else if($attributes['type'] === 'collection'){
+						$collection = $this->entity->{'get'.ucfirst($field)}();
+						if(null !== $collection && count($collection) > 0){
+							foreach ($collection as $key => $item) {
+								if($this->embededForms[$field.'_'.intval($key)]->isValid() !== true){
+									$errorCount++;
+								}
+							}
 						}
 					}
 					else{

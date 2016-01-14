@@ -1,0 +1,7 @@
+{% if value|length %}
+	{% for key,item in value %}
+		<div id="form_{{formParents(formParents,'id')}}{{name}}_{{key|intval}}" {{ formAttributes(field.attributes) }}>
+			{{ form(form.embededForms[(name ~ '_' ~ key|intval)],null) }}
+		</div>
+	{% endfor %}
+{% endif %}
