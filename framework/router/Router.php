@@ -66,7 +66,7 @@ class Router
         }
         if(is_array($this->routes) && count($this->routes)){
             foreach ($this->routes as $routeName => $route) {
-                $regExp = preg_replace('/\{[^\}]+\}/','[a-zA-Z0-9_\-\.%\+;=]+',$route['path']);
+                $regExp = preg_replace('/\{[^\}]+\}/','[a-zA-Z0-9_\-\.%&\+;=]+',$route['path']);
                 $regExp = preg_replace('/\//','\/',$regExp);
                 if(preg_match('/^'.$regExp.'$/',$path)){
                     $this->currentRouteName = $routeName;
@@ -79,8 +79,8 @@ class Router
     }
 
     protected function getParameterValue($parameter,$route,$path){
-        $regExp = str_replace($parameter,'([a-zA-Z0-9_\-\.%\+;=]+)',$route['path']);
-        $regExp = preg_replace('/\{[^\}]+\}/','[a-zA-Z0-9_\-\.%\+;=]+',$regExp);
+        $regExp = str_replace($parameter,'([a-zA-Z0-9_\-\.&%\+;=]+)',$route['path']);
+        $regExp = preg_replace('/\{[^\}]+\}/','[a-zA-Z0-9_\-\.&%\+;=]+',$regExp);
         $regExp = preg_replace('/\//','\/',$regExp);
         $match = preg_replace('/'.$regExp.'/','$1',$path);
         /// check that preg_replace actually replaced something
