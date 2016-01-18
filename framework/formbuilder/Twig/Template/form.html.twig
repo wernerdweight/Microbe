@@ -10,7 +10,7 @@
 		{% if field.container is not defined or field.container != false %}<div{{ formAttributes(field.containerAttributes) }}>{% endif %}
 			{% if field.label is defined and field.label != false %}
 				<div{{ formAttributes(field.labelAttributes) }}>
-					<label for="form_{{name}}">{{field.label}}</label>
+					<label for="form_{{formParents(form.parents,'id')}}{{name}}">{{field.label}}{% if options.labelSuffix is defined %} [{{options.labelSuffix}}]{% endif %}</label>
 				</div>
 			{% endif %}
 			{% if field.wrapper is not defined or field.wrapper != false %}<div{{ formAttributes(field.wrapperAttributes) }}>{% endif %}

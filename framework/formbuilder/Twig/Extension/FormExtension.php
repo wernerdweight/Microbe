@@ -18,11 +18,12 @@ class FormExtension extends \Twig_Extension
         $twig->getLoader()->addPath(__DIR__.'/../Template');
         
         return [
-            new \Twig_SimpleFunction('form',function($form,$path,$attributes = []) use ($twig){
+            new \Twig_SimpleFunction('form',function($form,$path,$attributes = [],$options = []) use ($twig){
                 return $twig->render('form.html.twig',[
                     'form' => $form,
                     'path' => $path,
-                    'attributes' => $attributes
+                    'attributes' => $attributes,
+                    'options' => $options
                 ]);
             },['is_safe' => ['html']]),
             new \Twig_SimpleFunction('formAttributes',function($attributes = null) use ($twig){
