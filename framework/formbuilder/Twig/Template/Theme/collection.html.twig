@@ -1,7 +1,12 @@
 {% if value|length %}
 	{% for key,item in value %}
+		{% set propertyAccessPath = field.labelProperty|split('.') %}
+		{% set labelSuffix = item %}
+		{% for path in propertyAccessPath %}
+			{% set labelSuffix = attribute(labelSuffix,path) %}
+		{% endfor %}
 		<div id="form_{{formParents(formParents,'id')}}{{name}}_{{key|intval}}" {{ formAttributes(field.attributes) }}>
-			{{ form(form.embededForms[(name ~ '_' ~ key|intval)],null) }}
+			{{ form(form.embededForms[(name ~ '_' ~ key|intval)],null,[],{'labelSuffix':labelSuffix}) }}
 		</div>
 	{% endfor %}
 {% endif %}
