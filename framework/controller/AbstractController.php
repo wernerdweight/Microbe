@@ -51,6 +51,10 @@ abstract class AbstractController{
 		return $this->kernel->service('twig')->render($template,$this->context['vars']);
 	}
 
+	protected function forward($controller,$action,$options = []){
+		return $this->kernel->service('router')->render($controller,$action,$options);
+	}
+
 	protected function redirect($url,$statusCode = 303){
 		return $this->kernel->service('router')->redirect($url,$statusCode);
 	}
