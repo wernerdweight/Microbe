@@ -3,9 +3,9 @@
 namespace WernerDweight\Microbe\framework\controller;
 
 use WernerDweight\Microbe\framework\kernel\Kernel;
-use WernerDweight\Microbe\framework\router\exception\PageNotFoundException;
-use WernerDweight\Microbe\framework\router\exception\BadRequestException;
-use WernerDweight\Microbe\framework\router\exception\UnauthorizedException;
+use WernerDweight\Microbe\framework\router\Exception\PageNotFoundException;
+use WernerDweight\Microbe\framework\router\Exception\BadRequestException;
+use WernerDweight\Microbe\framework\router\Exception\UnauthorizedException;
 
 abstract class AbstractController{
 	
