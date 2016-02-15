@@ -27,13 +27,13 @@ abstract class AbstractForm implements FormInterface{
 	protected function setupEmbededForms(){
 		foreach ($this->fields as $field => $attributes) {
 			if($attributes['type'] === 'entity'){
-				$this->embededForms[$field] = FormFactory::createForm($this->entity->{'get'.ucfirst($field)}(),$attributes['form'],array_merge($this->parents,[$field]));
+				$this->embededForms[$field] = FormFactory::createForm($this->entity->{'get'.ucfirst($field)}(),$attributes['form'],array_merge($this->parents,[$field]),$this->options);
 			}
 			else if($attributes['type'] === 'collection'){
 				$collection = $this->entity->{'get'.ucfirst($field)}();
 				if(null !== $collection && count($collection) > 0){
 					foreach ($collection as $key => $item) {
-						$this->embededForms[$field.'_'.intval($key)] = FormFactory::createForm($item,$attributes['form'],array_merge($this->parents,[$field.'_'.intval($key)]));
+						$this->embededForms[$field.'_'.intval($key)] = FormFactory::createForm($item,$attributes['form'],array_merge($this->parents,[$field.'_'.intval($key)]),$this->options);
 					}
 				}
 			}
