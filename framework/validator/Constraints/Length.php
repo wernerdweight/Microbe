@@ -18,7 +18,7 @@ class Length implements ConstraintInterface{
 		$min = self::getMin($options);
 		$max = self::getMax($options);
 		
-		if(strlen($value) < $min || strlen($value) > $max){
+		if(mb_strlen($value) < $min || mb_strlen($value) > $max){
 			return false;
 		}
 		return true;
