@@ -14,6 +14,7 @@ use WernerDweight\Microbe\framework\twig\CanonicalizeExtension;
 use WernerDweight\Microbe\framework\twig\PathExtension;
 use WernerDweight\Microbe\framework\twig\RenderExtension;
 use WernerDweight\Microbe\framework\twig\GeneralExtension;
+use WernerDweight\Microbe\framework\twig\TextFunctionsExtension;
 use WernerDweight\Microbe\framework\twig\TranslateExtension;
 use WernerDweight\Microbe\framework\parenhancer\Parenhancer;
 use WernerDweight\Microbe\framework\gatekeeper\Gatekeeper;
@@ -92,6 +93,7 @@ class Microbe{
 		$twig->addExtension(new RenderExtension($router));
 		$twig->addExtension(new FormExtension($twig));
 		$twig->addExtension(new GeneralExtension);
+		$twig->addExtension(new TextFunctionsExtension);
 
 		/// initialize canonicaler
 		$canonicalizer = new Canonicalizer;
