@@ -71,16 +71,29 @@ abstract class AbstractForm implements FormInterface{
 
 	public function bindData(){
 		$basePostData = $_POST['form'];
+		$baseFilesData = (true === isset($_FILES['form']) ? $_FILES['form'] : null);
 		foreach ($this->parents as $parent) {
 			$basePostData = $basePostData[$parent];
+			if(null !== $baseFilesData){
+				$baseFilesData = $baseFilesData[$parent];
+			}
 		}
 		foreach ($this->fields as $field => $attributes) {
 			if(false === in_array($attributes['type'],['separator','void'])){
 				if(true === in_array($attributes['type'],['checkbox','button'])){
 					$this->data[$field] = isset($basePostData[$field]);
 				}
+				else if(true === in_array($attributes['type'],['file'])){
+					$this->data[$field] = (true === isset($baseFilesData['tmp_name'][$field]) ? [
+						'name' => $baseFilesData['name'][$field],
+						'tmp_name' => $baseFilesData['tmp_name'][$field],
+						'type' => $baseFilesData['type'][$field],
+						'error' => $baseFilesData['error'][$field],
+						'size' => $baseFilesData['size'][$field],
+					] : null);
+				}
 				else if(false === in_array($attributes['type'],['entity','collection'])){
-					$this->data[$field] = $basePostData[$field];
+					$this->data[$field] = (true === isset($basePostData[$field]) ? $basePostData[$field] : null);
 				}
 
 				if($attributes['type'] !== 'button'){
