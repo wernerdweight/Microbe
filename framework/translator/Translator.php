@@ -47,6 +47,10 @@ class Translator{
         /// find translation
         $translated = $this->findTranslation($translation,$locale !== null ? $locale : $this->defaultLocale);
 
+        if(null === $translated){
+            return $translation;
+        }
+
         /// enhance parameters (if any)
         foreach ($parameters as $parameter => $value) {
             $translated = str_replace('%'.$parameter.'%',$value,$translated);

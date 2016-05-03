@@ -3,14 +3,16 @@
 namespace WernerDweight\Microbe\framework\formbuilder\Twig\Extension;
 
 use WernerDweight\Microbe\framework\formbuilder\Factory\FormFactory;
+use WernerDweight\Microbe\framework\translator\Translator;
 
 class FormExtension extends \Twig_Extension
 {
 
     protected $twig;
 
-    public function __construct(\Twig_Environment $twig){
+    public function __construct(\Twig_Environment $twig, Translator $translator){
         $this->twig = $twig;
+        $this->translator = $translator;
     }
 
     public function getFunctions(){
@@ -30,7 +32,12 @@ class FormExtension extends \Twig_Extension
                 $attributesString = '';
                 if($attributes !== null){
                     foreach ($attributes as $key => $value) {
-                        $attributesString .= ' '.$key.'="'.$value.'"';
+                        if(null !== $this->translator){
+                            $attributesString .= ' '.$key.'="'.$this->translator->translate($value).'"';
+                        }
+                        else{
+                            $attributesString .= ' '.$key.'="'.$value.'"';
+                        }
                     }
                 }
                 return $attributesString;

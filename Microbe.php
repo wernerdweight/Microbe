@@ -91,7 +91,7 @@ class Microbe{
 		$twig->addExtension(new CanonicalizeExtension);
 		$twig->addExtension(new PathExtension($router));
 		$twig->addExtension(new RenderExtension($router));
-		$twig->addExtension(new FormExtension($twig));
+		$twig->addExtension(new FormExtension($twig,$translator));
 		$twig->addExtension(new GeneralExtension);
 		$twig->addExtension(new TextFunctionsExtension);
 
