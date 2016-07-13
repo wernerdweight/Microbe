@@ -8,14 +8,21 @@
 			</ul>
 		{% endif %}
 		{% if field.container is not defined or field.container != false %}<div{{ formAttributes(field.containerAttributes) }}>{% endif %}
-			{% if field.label is defined and field.label != false %}
-				<div{{ formAttributes(field.labelAttributes) }}>
-					<label for="form_{{formParents(form.parents,'id')}}{{name}}">{{field.label|translate}}{% if options.labelSuffix is defined %} [{{options.labelSuffix}}]{% endif %}</label>
-				</div>
+			{% if field.inputFirst is defined and field.inputFirst == true %}
+				{% if field.wrapper is not defined or field.wrapper != false %}<div{{ formAttributes(field.wrapperAttributes) }}>{% endif %}
+					{{ formField(form,name,field,form.data[name],form.parents) }}
+				{% if field.wrapper is not defined or field.wrapper != false %}</div>{% endif %}
 			{% endif %}
-			{% if field.wrapper is not defined or field.wrapper != false %}<div{{ formAttributes(field.wrapperAttributes) }}>{% endif %}
-				{{ formField(form,name,field,form.data[name],form.parents) }}
-			{% if field.wrapper is not defined or field.wrapper != false %}</div>{% endif %}
+			{% if field.label is defined and field.label != false %}
+				{% if field.labelWrapper is not defined or field.labelWrapper != false %}<div{{ formAttributes(field.labelAttributes) }}>{% endif %}
+					<label for="form_{{formParents(form.parents,'id')}}{{name}}">{{field.label|translate}}{% if options.labelSuffix is defined %} [{{options.labelSuffix}}]{% endif %}</label>
+				{% if field.labelWrapper is not defined or field.labelWrapper != false %}</div>{% endif %}
+			{% endif %}
+			{% if field.inputFirst is not defined or field.inputFirst != true %}
+				{% if field.wrapper is not defined or field.wrapper != false %}<div{{ formAttributes(field.wrapperAttributes) }}>{% endif %}
+					{{ formField(form,name,field,form.data[name],form.parents) }}
+				{% if field.wrapper is not defined or field.wrapper != false %}</div>{% endif %}
+			{% endif %}
 		{% if field.container is not defined or field.container != false %}</div>{% endif %}
 	{% endfor %}
 {% if path is not null %}</form>{% endif %}
