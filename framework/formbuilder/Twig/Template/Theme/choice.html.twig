@@ -13,7 +13,14 @@
 			<option value="">{{field.emptyOption}}</option>
 		{% endif %}
 		{% for key,option in field.options %}
-			<option value="{{key}}"{% if (field.optionsCallback is defined ? attribute(value,field.optionsCallback.value) : value) == key %} selected="selected"{% endif %}>{{field.optionsCallback is defined ? attribute(option,field.optionsCallback.property) : option}}</option>
+			{% if field.optionsCallback is defined %}
+				{% set propertyAccessPath = field.optionsCallback.property|split('.') %}
+				{% set property = option %}
+				{% for path in propertyAccessPath %}
+					{% set property = attribute(property,path) %}
+				{% endfor %}
+			{% endif %}
+			<option value="{{key}}"{% if (field.optionsCallback is defined ? attribute(value,field.optionsCallback.value) : value) == key %} selected="selected"{% endif %}>{{field.optionsCallback is defined ? property : option}}</option>
 		{% endfor %}
 	</select>
 {% endif %}
