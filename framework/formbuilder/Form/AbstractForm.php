@@ -43,7 +43,8 @@ abstract class AbstractForm implements FormInterface{
 	protected function setupChoiceOptions(){
 		foreach ($this->fields as $field => $attributes) {
 			if($attributes['type'] === 'choice' && true === isset($attributes['optionsCallback'])){
-				$this->fields[$field]['options'] = $attributes['optionsCallback']['class']::loadOptions($field,$this->options);
+				$entityName = (true === isset($attributes['optionsCallback']['entity']) ? $attributes['optionsCallback']['entity'] : $field);
+				$this->fields[$field]['options'] = $attributes['optionsCallback']['class']::loadOptions($entityName,$this->options);
 			}
 		}
 	}
