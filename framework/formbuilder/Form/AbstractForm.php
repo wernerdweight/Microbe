@@ -115,7 +115,20 @@ abstract class AbstractForm implements FormInterface{
 						}
 					}
 					else if($attributes['type'] === 'choice' && true === isset($attributes['optionsCallback'])){
-						$this->entity->{'set'.ucfirst($field)}(isset($attributes['options'][$this->data[$field]]) ? $attributes['options'][$this->data[$field]] : null);
+						if($attributes['multiple'] === true){
+							$values = [];
+							if(count($this->data[$field]) > 0){
+								foreach ($this->data[$field] as $key => $choice) {
+									if(true === isset($attributes['options'][$choice])){
+										$values[$choice] = $attributes['options'][$choice];
+									}
+								}
+							}
+							$this->entity->{'set'.ucfirst($field)}(count($values) > 0 ? $values : null);
+						}
+						else{
+							$this->entity->{'set'.ucfirst($field)}(isset($attributes['options'][$this->data[$field]]) ? $attributes['options'][$this->data[$field]] : null);
+						}
 					}
 					else if($attributes['type'] === 'repeatedPassword'){
 						$this->entity->{'set'.ucfirst($field)}($this->data[$field]['password']);
