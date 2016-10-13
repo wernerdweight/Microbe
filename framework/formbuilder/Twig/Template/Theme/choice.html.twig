@@ -8,7 +8,13 @@
 			{% endfor %}
 		{% endif %}
 		{% if field.multiple is defined and field.multiple == true %}{# checkbox #}
-			<input type="checkbox" id="form_{{formParents(formParents,'id')}}{{name}}_{{loop.index0}}" name="form{{formParents(formParents,'name')}}[{{name}}][]" value="{{key}}"{{ formAttributes(field.attributes) }}{% if key in value|keys %} checked="checked"{% endif %}>
+			{% set checked = false %}
+			{% for k,i in value %}
+				{% if (attribute(i,field.optionsCallback.value) is defined and key == attribute(i,field.optionsCallback.value)) or (attribute(i,field.optionsCallback.value) is not defined and key == i) %}
+					{% set checked = true %}
+				{% endif %}
+			{% endfor %}
+			<input type="checkbox" id="form_{{formParents(formParents,'id')}}{{name}}_{{loop.index0}}" name="form{{formParents(formParents,'name')}}[{{name}}][]" value="{{key}}"{{ formAttributes(field.attributes) }}{% if checked %} checked="checked"{% endif %}>
 		{% else %}{# radio #}
 			<input type="radio" id="form_{{formParents(formParents,'id')}}{{name}}_{{loop.index0}}" name="form{{formParents(formParents,'name')}}[{{name}}]" value="{{key}}"{{ formAttributes(field.attributes) }}{% if key == value %} checked="checked"{% endif %}>
 		{% endif %}
