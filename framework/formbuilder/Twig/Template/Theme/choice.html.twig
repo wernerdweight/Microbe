@@ -29,9 +29,11 @@
 			{% if field.optionsCallback is defined %}
 				{% set propertyAccessPath = field.optionsCallback.property|split('.') %}
 				{% set property = option %}
-				{% for path in propertyAccessPath %}
-					{% set property = attribute(property,path) %}
-				{% endfor %}
+				{% if field.optionsCallback.property is not null %}
+					{% for path in propertyAccessPath %}
+						{% set property = attribute(property,path) %}
+					{% endfor %}
+				{% endif %}
 			{% endif %}
 			<option value="{{key}}"{% if (field.optionsCallback is defined and attribute(value,field.optionsCallback.value) is not null ? attribute(value,field.optionsCallback.value) : value) == key %} selected="selected"{% endif %}>{{field.optionsCallback is defined ? property : option}}</option>
 		{% endfor %}
