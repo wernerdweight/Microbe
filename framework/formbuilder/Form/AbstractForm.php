@@ -162,6 +162,10 @@ abstract class AbstractForm implements FormInterface{
 								}
 							}
 						}
+						if(null !== ($error = Validator::validate($this->entity->{'get'.ucfirst($field)}(),$constraint,$options))) {
+							$this->fields[$field]['errors'][] = $error;
+							$errorCount++;
+						}
 					}
 					else{
 						if($attributes['type'] === 'repeatedPassword' && $constraint === 'repeated'){
