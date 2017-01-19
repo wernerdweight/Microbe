@@ -33,7 +33,7 @@ abstract class AbstractForm implements FormInterface{
 				$collection = $this->entity->{'get'.ucfirst($field)}();
 				if(null !== $collection && count($collection) > 0){
 					foreach ($collection as $key => $item) {
-						$this->embededForms[$field.'_'.intval($key)] = FormFactory::createForm($item,$attributes['form'],array_merge($this->parents,[$field.'_'.intval($key)]),$this->options);
+						$this->embededForms[$field.'_'.intval($key)] = FormFactory::createForm($item,$attributes['form'],array_merge($this->parents,[$field,intval($key)]),$this->options);
 					}
 				}
 			}
@@ -70,8 +70,8 @@ abstract class AbstractForm implements FormInterface{
 		$this->setupChoiceOptions();
 	}
 
-	public function bindData(){
-		$basePostData = $_POST['form'];
+	public function bindData(array $formData = null){
+		$basePostData = $formData ?: $_POST['form'];
 		$baseFilesData = (true === isset($_FILES['form']) ? $_FILES['form'] : null);
 		foreach ($this->parents as $parent) {
 			$basePostData = $basePostData[$parent];
@@ -99,7 +99,7 @@ abstract class AbstractForm implements FormInterface{
 
 				if($attributes['type'] !== 'button'){
 					if($attributes['type'] === 'entity'){
-						$embededEntity = $this->embededForms[$field]->bindData()->getEntity();
+						$embededEntity = $this->embededForms[$field]->bindData($formData)->getEntity();
 						$this->entity->{'set'.ucfirst($field)}($embededEntity);
 						$this->data[$field] = $embededEntity;
 					}
@@ -108,7 +108,7 @@ abstract class AbstractForm implements FormInterface{
 						if(null !== $collection && count($collection) > 0){
 							$embededCollection = [];
 							foreach ($collection as $key => $item) {
-								$embededCollection[$key] = $this->embededForms[$field.'_'.intval($key)]->bindData()->getEntity();
+								$embededCollection[$key] = $this->embededForms[$field.'_'.intval($key)]->bindData($formData)->getEntity();
 							}
 							$this->entity->{'set'.ucfirst($field)}($embededCollection);
 							$this->data[$field] = $embededCollection;
