@@ -70,14 +70,11 @@ abstract class AbstractForm implements FormInterface{
 		$this->setupChoiceOptions();
 	}
 
-	public function bindData(array $formData = null){
+	public function bindData(array $formData = null, array $filesData = null){
 		$basePostData = $formData ?: $_POST['form'];
-		$baseFilesData = (true === isset($_FILES['form']) ? $_FILES['form'] : null);
+		$baseFilesData = $filesData ?: (isset($_FILES['form']) ? $_FILES['form'] : null);
 		foreach ($this->parents as $parent) {
 			$basePostData = $basePostData[$parent];
-			if(null !== $baseFilesData){
-				$baseFilesData = $baseFilesData[$parent];
-			}
 		}
 		foreach ($this->fields as $field => $attributes) {
 			if(false === in_array($attributes['type'],['separator','void'])){
@@ -85,12 +82,13 @@ abstract class AbstractForm implements FormInterface{
 					$this->data[$field] = isset($basePostData[$field]);
 				}
 				else if(true === in_array($attributes['type'],['file'])){
-					$this->data[$field] = (true === isset($baseFilesData['tmp_name'][$field]) ? [
-						'name' => $baseFilesData['name'][$field],
-						'tmp_name' => $baseFilesData['tmp_name'][$field],
-						'type' => $baseFilesData['type'][$field],
-						'error' => $baseFilesData['error'][$field],
-						'size' => $baseFilesData['size'][$field],
+					$key = (true === isset($attributes['indexByValue']) && true === $attributes['indexByValue'] ? $basePostData[$field] : $field);
+					$this->data[$field] = (true === isset($baseFilesData['tmp_name'][$key]) ? [
+						'name' => $baseFilesData['name'][$key],
+						'tmp_name' => $baseFilesData['tmp_name'][$key],
+						'type' => $baseFilesData['type'][$key],
+						'error' => $baseFilesData['error'][$key],
+						'size' => $baseFilesData['size'][$key],
 					] : null);
 				}
 				else if(false === in_array($attributes['type'],['entity','collection'])){
@@ -99,7 +97,7 @@ abstract class AbstractForm implements FormInterface{
 
 				if($attributes['type'] !== 'button'){
 					if($attributes['type'] === 'entity'){
-						$embededEntity = $this->embededForms[$field]->bindData($formData)->getEntity();
+						$embededEntity = $this->embededForms[$field]->bindData($formData, $filesData)->getEntity();
 						$this->entity->{'set'.ucfirst($field)}($embededEntity);
 						$this->data[$field] = $embededEntity;
 					}
@@ -108,7 +106,7 @@ abstract class AbstractForm implements FormInterface{
 						if(null !== $collection && count($collection) > 0){
 							$embededCollection = [];
 							foreach ($collection as $key => $item) {
-								$embededCollection[$key] = $this->embededForms[$field.'_'.intval($key)]->bindData($formData)->getEntity();
+								$embededCollection[$key] = $this->embededForms[$field.'_'.intval($key)]->bindData($formData, $filesData)->getEntity();
 							}
 							$this->entity->{'set'.ucfirst($field)}($embededCollection);
 							$this->data[$field] = $embededCollection;
