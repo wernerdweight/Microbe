@@ -1,10 +1,6 @@
 Werner Dweight's Microbe
 ====================================
 
-**Warning:**
-
-> This utility IS STILL UNDER DEVELOPMENT! Usage of this utility is discouraged!
-
 Installation
 ------------
 
