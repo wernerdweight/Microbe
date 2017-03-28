@@ -91,6 +91,9 @@ class Router
     }
 
     protected function getControllerResponse($controller,$action,$options = array()){
+        foreach ($options as $option => $value) {
+            $controller = str_replace('{'.$option.'}', $value, $controller);
+        }
         $class = '\\Microbe\\src\app\controllers\\'.str_replace(':','\\',$controller).'Controller';
         $controller = new $class($this->kernel);
         return $controller->$action($options);
