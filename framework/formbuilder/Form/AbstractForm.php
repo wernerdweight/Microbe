@@ -67,7 +67,9 @@ abstract class AbstractForm implements FormInterface{
 		$this->fields = $this->setupFields($fields);
 		$this->loadDataFromEntity();
 		$this->setupEmbededForms();
-		$this->setupChoiceOptions();
+		if(false === isset($this->options['preloadOptions']) || true === $this->options['preloadOptions']) {
+			$this->setupChoiceOptions();
+		}
 	}
 
 	public function bindData(array $formData = null, array $filesData = null){
