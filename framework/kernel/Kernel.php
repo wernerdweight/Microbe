@@ -89,7 +89,7 @@ class Kernel{
 	}
 
 	protected function determineRootUri(){
-		return 'http'.($_SERVER['HTTPS'] === 'on' ? 's' : '').'://'.$_SERVER['HTTP_HOST'].$this->determineBaseUri();
+		return 'http'.(true === isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 's' : '').'://'.$_SERVER['HTTP_HOST'].$this->determineBaseUri();
 	}
 
 	protected function determineBaseUri(){
