@@ -161,6 +161,11 @@ class Kernel{
 		}
 	}
 
+	public function setService($serviceName, $service){
+		$this->services[$serviceName] = $service;
+		return $this;
+	}
+
 	public function configuration($key){
 		return Traverser::getFromArray($this->configuration,$key,'.');
 	}
