@@ -59,12 +59,34 @@ class Microbe{
 			]);
 		}
 
-		/// initialize mailer
-		$mailer = null;
-		if(isset($configuration['swiftmailer']) && $configuration['swiftmailer']['enable'] === true){
-			$transport = \Swift_MailTransport::newInstance();
-			$mailer = \Swift_Mailer::newInstance($transport);
-		}
+        /// initialize mailer
+        $mailer = null;
+        $mailerConfig = $configuration['swiftmailer'];
+        if(isset($mailerConfig) && isset($mailerConfig['enable']) && $mailerConfig['enable'] === true){
+            $transport = \Swift_MailTransport::newInstance();
+
+            if (isset($mailerConfig['transport']) && $mailerConfig['transport'] === 'smtp') {
+                $transport = \Swift_SmtpTransport::newInstance(
+                    isset($mailerConfig['host']) ? $mailerConfig['host'] : null,
+                    isset($mailerConfig['port']) ? $mailerConfig['port'] : null,
+                    isset($mailerConfig['encryption']) ? $mailerConfig['encryption'] : null
+                );
+
+                if (isset($mailerConfig['auth_mode'])) {
+                    $transport = $transport->setAuthMode($mailerConfig['auth_mode']);
+                }
+
+                if (isset($mailerConfig['username'])) {
+                    $transport = $transport->setUsername($mailerConfig['username']);
+                }
+
+                if (isset($mailerConfig['password'])) {
+                    $transport = $transport->setPassword($mailerConfig['password']);
+                }
+            }
+
+            $mailer = \Swift_Mailer::newInstance($transport);
+        }
 
 		/// initialize gatekeeper
 		$gatekeeper = Gatekeeper::getInstance();
